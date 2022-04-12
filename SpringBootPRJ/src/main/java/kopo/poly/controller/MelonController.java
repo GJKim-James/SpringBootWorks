@@ -194,6 +194,31 @@ public class MelonController {
     }
 
     /**
+     * '방탄소년단' 노래 데이터 정보의 기존 필드 변경 및 신규 필드 추가하기
+     */
+    @GetMapping(value = "melon/updateManySong")
+    public String updateManySong() throws Exception {
+
+        log.info(this.getClass().getName() + ".updateManySong Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.updateManySong();
+
+        if (res == 1) {
+            msg = "'방탄소년단' 노래 데이터 정보의 기존 필드 변경 및 신규 필드 추가 success";
+
+        } else {
+            msg = "'방탄소년단' 노래 데이터 정보의 기존 필드 변경 및 신규 필드 추가 fail";
+        }
+
+        log.info(this.getClass().getName() + "updateManySong End!");
+
+        return msg;
+    }
+
+    /**
      * 가수의 노래 삭제하기
      */
     @GetMapping(value = "melon/deleteSong")

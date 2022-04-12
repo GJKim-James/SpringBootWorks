@@ -49,6 +49,11 @@ public interface IMelonService {
     int updateAddBTSMember() throws Exception;
 
     /**
+     * 방탄소년단 노래 데이터의 기존 필드 변경 및 신규 필드 추가
+     */
+    int updateManySong() throws Exception;
+
+    /**
      * 가수의 노래 삭제하기
      */
     int deleteSong() throws Exception;
