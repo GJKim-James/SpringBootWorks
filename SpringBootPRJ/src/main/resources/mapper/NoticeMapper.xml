@@ -34,9 +34,7 @@
 	     WHERE N.USER_ID = U.USER_ID 
 	       AND N.NOTICE_SEQ = #{notice_seq}
 	</select>
-	
 
-	
 	<!-- 조회수 증가 쿼리 -->
 	<update id="updateNoticeReadCnt" parameterType="NoticeDTO">
 		UPDATE NOTICE SET

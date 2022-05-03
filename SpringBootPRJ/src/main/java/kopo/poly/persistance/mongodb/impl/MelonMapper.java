@@ -281,8 +281,8 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         // MongoDB 환경은 분산 환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
         FindIterable<Document> rs = col.find(query);
 
-        // 람다식 활용하여 데이터 삭제하기
-        // 전체 컬렉션에 있는 데이터들을 삭제하기
+        // 람다식 활용하여 데이터 수정하기
+        // 전체 컬렉션에 있는 데이터들을 수정하기
         rs.forEach(doc -> col.updateOne(doc, new Document("$set", new Document("singer", "BTS"))));
 
         res = 1;
