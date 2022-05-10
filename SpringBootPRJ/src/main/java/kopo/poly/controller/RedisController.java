@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -215,6 +216,86 @@ public class RedisController {
         log.info(this.getClass().getName() + ".getRedisListJSONLambda End!");
 
         return rList;
+    }
+
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장하기
+     */
+    @GetMapping(value = "redis/saveRedisHash")
+    public String saveRedisHash() throws Exception {
+
+        log.info(this.getClass().getName() + ".saveRedisHash Start!");
+
+        // 수집 결과 출력
+        String msg;
+
+        int res = myRedisService.saveRedisHash();
+
+        if (res == 1) {
+            msg = "키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장하기 success";
+
+        } else {
+            msg = "키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장하기 fail";
+        }
+
+        log.info(this.getClass().getName() + ".saveRedisHash End!");
+
+        return msg;
+    }
+
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장된 데이터 가져오기
+     */
+    @GetMapping(value = "redis/getRedisHash")
+    public RedisDTO getRedisHash() throws Exception {
+
+        log.info(this.getClass().getName() + ".getRedisHash Start!");
+
+        RedisDTO rDTO = myRedisService.getRedisHash();
+
+        log.info(this.getClass().getName() + ".getRedisHash End!");
+
+        return rDTO;
+    }
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장하기
+     */
+    @GetMapping(value = "redis/saveRedisSetJSONLambda")
+    public String saveRedisSetJSONLambda() throws Exception {
+
+        log.info(this.getClass().getName() + ".saveRedisSetJSONLambda Start!");
+
+        // 수집 결과 출력
+        String msg;
+
+        int res = myRedisService.saveRedisSetJSONLambda();
+
+        if (res == 1) {
+            msg = "키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장하기 success";
+
+        } else {
+            msg = "키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장하기 fail";
+        }
+
+        log.info(this.getClass().getName() + ".saveRedisSetJSONLambda End!");
+
+        return msg;
+    }
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장한 데이터 가져오기
+     */
+    @GetMapping(value = "redis/getRedisSetJSONLambda")
+    public Set<RedisDTO> getRedisSetJSONLambda() throws Exception {
+
+        log.info(this.getClass().getName() + ".getRedisSetJSONLambda Start!");
+
+        Set<RedisDTO> rSet = myRedisService.getRedisSetJSONLambda();
+
+        log.info(this.getClass().getName() + ".getRedisSetJSONLambda End!");
+
+        return rSet;
     }
 
 }

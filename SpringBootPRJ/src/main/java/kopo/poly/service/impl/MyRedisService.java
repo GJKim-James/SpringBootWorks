@@ -7,9 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service("MyRedisService")
@@ -138,7 +136,7 @@ public class MyRedisService implements IMyRedisService {
 
         for (int i = 0; i < 10; i++) {
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다."); // myRedis_List에 저장할 값(value)
+            pDTO.setTest_text(i + "번째 데이터입니다."); // myRedis_List_JSON에 저장할 값(value)
             pDTO.setName("김광진[" + i + "]");
             pDTO.setAddr("수원");
             pDTO.setEmail("gjk0635@naver.com");
@@ -175,13 +173,13 @@ public class MyRedisService implements IMyRedisService {
     public int saveRedisListJSONLambda() throws Exception {
         log.info(this.getClass().getName() + ".saveRedisListJSONLambda Start!");
 
-        String redisKey = "myRedis_List_JSON_Lambda";
+        String redisKey = "myRedis_List_JSON_Lambda"; // 저장할 키(key) 이름
 
         List<RedisDTO> pList = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setTest_text(i + "번째 데이터입니다."); // myRedis_List_JSON_Lambda에 저장할 값(value)
             pDTO.setName("김광진[" + i + "]");
             pDTO.setAddr("수원");
             pDTO.setEmail("gjk0635@naver.com");
@@ -201,7 +199,7 @@ public class MyRedisService implements IMyRedisService {
     public List<RedisDTO> getRedisListJSONLambda() throws Exception {
         log.info(this.getClass().getName() + ".getRedisListJSONLambda Start!");
 
-        String redisKey = "myRedis_List_JSON_Lambda";
+        String redisKey = "myRedis_List_JSON_Lambda"; // 가져올 Redis 키(key)
 
         List<RedisDTO> rList = myRedisMapper.getRedisListJSON(redisKey); // 이전에 만든 getRedisListJSON 호출
 
@@ -212,6 +210,86 @@ public class MyRedisService implements IMyRedisService {
         log.info(this.getClass().getName() + ".getRedisListJSONLambda End!");
 
         return rList;
+    }
+
+    @Override
+    public int saveRedisHash() throws Exception {
+        log.info(this.getClass().getName() + ".saveRedisHash Start!");
+
+        String redisKey = "myRedis_Hash"; // 저장할 키(key) 이름
+
+        RedisDTO pDTO = new RedisDTO();
+
+        // myRedis_Hash에 저장할 값(value)
+        pDTO.setName("김광진");
+        pDTO.setAddr("수원");
+        pDTO.setEmail("gjk0635@naver.com");
+
+        int res = myRedisMapper.saveRedisHash(redisKey, pDTO);
+
+        log.info(this.getClass().getName() + ".saveRedisHash End!");
+
+        return res;
+    }
+
+    @Override
+    public RedisDTO getRedisHash() throws Exception {
+        log.info(this.getClass().getName() + ".getRedisHash Start!");
+
+        String redisKey = "myRedis_Hash"; // 가져올 Redis 키(key)
+
+        RedisDTO rDTO = myRedisMapper.getRedisHash(redisKey);
+
+        if (rDTO == null) {
+            rDTO = new RedisDTO();
+        }
+
+        log.info(this.getClass().getName() + ".getRedisHash End!");
+
+        return rDTO;
+    }
+
+    @Override
+    public int saveRedisSetJSONLambda() throws Exception {
+        log.info(this.getClass().getName() + ".saveRedisSetJSONLambda Start!");
+
+        String redisKey = "myRedis_Set_JSON"; // 저장할 키(key) 이름
+
+        Set<RedisDTO> pSet = new HashSet<>();
+
+        for (int i = 0; i < 10; i++) {
+            RedisDTO pDTO = new RedisDTO();
+            pDTO.setTest_text(i + "번째 데이터입니다."); // myRedis_Set_JSON에 저장할 값(value)
+            pDTO.setName("김광진[" + i + "]");
+            pDTO.setAddr("수원");
+            pDTO.setEmail("gjk0635@naver.com");
+
+            pSet.add(pDTO);
+            pDTO = null;
+        }
+
+        int res = myRedisMapper.saveRedisSetJSONLambda(redisKey, pSet);
+
+        log.info(this.getClass().getName() + ".saveRedisSetJSONLambda End!");
+
+        return res;
+    }
+
+    @Override
+    public Set<RedisDTO> getRedisSetJSONLambda() throws Exception {
+        log.info(this.getClass().getName() + ".getRedisSetJSONLambda Start!");
+
+        String redisKey = "myRedis_Set_JSON"; // 가져올 Redis 키(key)
+
+        Set<RedisDTO> rSet = myRedisMapper.getRedisSetJSONLambda(redisKey);
+
+        if (rSet == null) {
+            rSet = new HashSet<>();
+        }
+
+        log.info(this.getClass().getName() + ".getRedisSetJSONLambda End!");
+
+        return rSet;
     }
 
 }

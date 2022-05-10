@@ -3,6 +3,7 @@ package kopo.poly.service;
 import kopo.poly.dto.RedisDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IMyRedisService {
 
@@ -59,5 +60,24 @@ public interface IMyRedisService {
      */
     List<RedisDTO> getRedisListJSONLambda() throws Exception;
 
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장하기
+     */
+    int saveRedisHash() throws Exception;
+
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장된 데이터 가져오기
+     */
+    RedisDTO getRedisHash() throws Exception;
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장하기
+     */
+    int saveRedisSetJSONLambda() throws Exception;
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장한 데이터 가져오기
+     */
+    Set<RedisDTO> getRedisSetJSONLambda() throws Exception;
 
 }

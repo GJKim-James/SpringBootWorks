@@ -3,6 +3,7 @@ package kopo.poly.persistance.redis;
 import kopo.poly.dto.RedisDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IMyRedisMapper {
 
@@ -82,5 +83,39 @@ public interface IMyRedisMapper {
      * @return 저장 성공 여부
      */
     int saveRedisListJSONLambda(String redisKey, List<RedisDTO> pList) throws Exception;
+
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장하기
+     *
+     * @param redisKey Redis 저장 키
+     * @param pDTO 저장할 정보들
+     * @return 저장 성공 여부
+     */
+    int saveRedisHash(String redisKey, RedisDTO pDTO) throws Exception;
+
+    /**
+     * 키(key)는 Hash 타입으로, 값(value)은 문자열 형태로 저장된 데이터 가져오기
+     *
+     * @param redisKey 가져올 RedisKey
+     * @return 결과값
+     */
+    RedisDTO getRedisHash(String redisKey) throws Exception;
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장하기
+     *
+     * @param redisKey Redis 저장 키
+     * @param pSet 저장할 정보들
+     * @return 저장 성공 여부
+     */
+    int saveRedisSetJSONLambda(String redisKey, Set<RedisDTO> pSet) throws Exception;
+
+    /**
+     * 키(key)는 Set 타입으로, 값(value)은 JSON 형태로 람다식을 이용하여 저장한 데이터 가져오기
+     *
+     * @param redisKey 가져올 RedisKey
+     * @return 결과값
+     */
+    Set<RedisDTO> getRedisSetJSONLambda(String redisKey) throws Exception;
 
 }
