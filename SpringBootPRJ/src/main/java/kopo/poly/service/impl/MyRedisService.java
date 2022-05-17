@@ -292,4 +292,73 @@ public class MyRedisService implements IMyRedisService {
         return rSet;
     }
 
+    @Override
+    public int saveRedisZSetJSON() throws Exception {
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON Start!");
+
+        String redisKey = "myRedis_ZSet_JSON"; // 저장할 키(key) 이름
+
+        List<RedisDTO> pList = new LinkedList<>();
+
+        for (int i = 0; i < 10; i++) {
+            RedisDTO pDTO = new RedisDTO();
+            pDTO.setTest_text(i + "번째 데이터입니다."); // myRedis_Set_JSON에 저장할 값(value)
+            pDTO.setName("김광진[" + i + "]");
+            pDTO.setAddr("수원");
+            pDTO.setEmail("gjk0635@naver.com");
+
+            pList.add(pDTO);
+            pDTO = null;
+        }
+
+        int res = myRedisMapper.saveRedisZSetJSON(redisKey, pList);
+
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON End!");
+
+        return res;
+    }
+
+    @Override
+    public Set<RedisDTO> getRedisZSetJSON() throws Exception {
+        log.info(this.getClass().getName() + ".getRedisZSetJSON Start!");
+
+        String redisKey = "myRedis_ZSet_JSON"; // 가져올 Redis 키(key)
+
+        Set<RedisDTO> rSet = myRedisMapper.getRedisZSetJSON(redisKey);
+
+        if (rSet == null) {
+            rSet = new HashSet<>();
+        }
+
+        log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
+
+        return rSet;
+    }
+
+    @Override
+    public boolean deleteJSONData() throws Exception {
+        log.info(this.getClass().getName() + ".deleteJSONData Start!");
+
+        String redisKey = "myRedis_ZSet_JSON"; // 삭제할 Redis 키(key)
+
+        boolean res = myRedisMapper.deleteJSONData(redisKey); // 삭제하기 호출
+
+        log.info(this.getClass().getName() + ".deleteJSONData End!");
+
+        return res;
+    }
+
+    @Override
+    public boolean deleteStringData() throws Exception {
+        log.info(this.getClass().getName() + ".deleteStringData Start!");
+
+        String redisKey = "myRedis_String"; // 삭제할 Redis 키(key)
+
+        boolean res = myRedisMapper.deleteStringData(redisKey); // 삭제하기 호출
+
+        log.info(this.getClass().getName() + ".deleteStringData End!");
+
+        return res;
+    }
+
 }

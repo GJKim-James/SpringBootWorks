@@ -80,4 +80,24 @@ public interface IMyRedisService {
      */
     Set<RedisDTO> getRedisSetJSONLambda() throws Exception;
 
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장하기
+     */
+    int saveRedisZSetJSON() throws Exception;
+
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장된 데이터 가져오기
+     */
+    Set<RedisDTO> getRedisZSetJSON() throws Exception;
+
+    /**
+     * RedisDB에 JSON 구조로 저장된 데이터 삭제하기
+     */
+    boolean deleteJSONData() throws Exception;
+
+    /**
+     * RedisDB에 String 구조로 저장된 데이터 삭제하기
+     */
+    boolean deleteStringData() throws Exception;
+
 }

@@ -394,4 +394,102 @@ public class MyRedisMapper implements IMyRedisMapper {
         return rSet;
     }
 
+    @Override
+    public int saveRedisZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON Start!");
+
+        int res = 0;
+
+        // RedisDB의 키 데이터 타입을 String으로 정의(항상 String으로 설정함)
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+
+        // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
+
+        int idx = 0;
+
+        for (RedisDTO dto : pList) {
+            redisDB.opsForZSet().add(redisKey, dto, ++idx); // Score 값 '++idx'로 지정
+        }
+
+        // 저장되는 데이터의 유효기간(TTL;Time To Live)은 5시간으로 정의
+        redisDB.expire(redisKey, 5, TimeUnit.HOURS);
+
+        res = 1;
+
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON End!");
+
+        return res;
+    }
+
+    @Override
+    public Set<RedisDTO> getRedisZSetJSON(String redisKey) throws Exception {
+        log.info(this.getClass().getName() + ".getRedisZSetJSON Start!");
+
+        // 결과값을 저장할 객체
+        Set<RedisDTO> rSet = null;
+
+        // RedisDB의 키 데이터 타입을 String으로 정의(항상 String으로 설정함)
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+
+        // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
+
+        if (redisDB.hasKey(redisKey)) {
+
+            // 저장된 전체 레코드 수
+            long cnt = redisDB.opsForZSet().size(redisKey);
+
+            rSet = (Set) redisDB.opsForZSet().range(redisKey, 0, cnt);
+            // (Set)은 형 변환을 의미한다. 위에 있는 Set<RedisDTO>와 동일한 형으로 변환된다.
+            // 'Set'은 Object(최상위 객체)를 의미하기 때문에 Set<RedisDTO>도 받을 수 있다.
+        }
+
+        log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
+
+        return rSet;
+    }
+
+    @Override
+    public boolean deleteJSONData(String redisKey) throws Exception {
+        log.info(this.getClass().getName() + ".deleteJSONData Start!");
+
+        // 저장되었던 데이터 타입 정의
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
+
+        boolean res = false;
+
+        if (redisDB.hasKey(redisKey)) { // RedisDB에 저장된 키(key)가 있으면 삭제
+            redisDB.delete(redisKey);
+
+            res = true;
+        }
+
+        log.info(this.getClass().getName() + ".deleteJSONData End!");
+
+        return res;
+    }
+
+    @Override
+    public boolean deleteStringData(String redisKey) throws Exception {
+        log.info(this.getClass().getName() + ".deleteStringData Start!");
+
+        // 저장되었던 데이터 타입 정의
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+        redisDB.setValueSerializer(new StringRedisSerializer());
+
+        boolean res = false;
+
+        if (redisDB.hasKey(redisKey)) { // RedisDB에 저장된 키(key)가 있으면 삭제
+            redisDB.delete(redisKey);
+
+            res = true;
+        }
+
+        log.info(this.getClass().getName() + ".deleteStringData End!");
+
+        return res;
+    }
+
 }

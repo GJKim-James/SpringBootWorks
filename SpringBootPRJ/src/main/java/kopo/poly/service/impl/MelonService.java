@@ -2,6 +2,7 @@ package kopo.poly.service.impl;
 
 import kopo.poly.dto.MelonDTO;
 import kopo.poly.persistance.mongodb.IMelonMapper;
+import kopo.poly.persistance.redis.IMelonCacheMapper;
 import kopo.poly.service.IMelonService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
@@ -23,6 +24,9 @@ public class MelonService implements IMelonService {
 
     @Resource(name = "MelonMapper")
     private IMelonMapper melonMapper; // MongoDB에 저장할 Mapper
+
+    @Resource(name = "MelonCacheMapper")
+    private IMelonCacheMapper melonCacheMapper; // RedisDB 실행을 위한 Mapper 추가
 
     @Override
     public int collectMelonSong() throws Exception {
@@ -72,6 +76,9 @@ public class MelonService implements IMelonService {
         // MongoDB에 데이터 저장하기
         res = melonMapper.insertSong(pList, colNm);
 
+        // RedisDB에 데이터 저장하기
+        res = melonCacheMapper.insertSong(pList, colNm);
+
         log.info(this.getClass().getName() + ".collectMelonSong End!");
 
         return res;
@@ -86,9 +93,17 @@ public class MelonService implements IMelonService {
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
 
-        List<MelonDTO> rList = new LinkedList<>();
+        List<MelonDTO> rList = null;
 
-        rList = melonMapper.getSongList(colNm);
+        // RedisDB에 저장되어 있는지 확인하기(Key 이름은 MongoDB 컬렉션 이름과 동일하게 사용)
+        // RedisDB에 값이 있으면 RedisDB에서 가져오고, 없으면 MongoDB에서 가져오기(RedisDB에서 가져오는게 더 빠르기 때문)
+        if (melonCacheMapper.getExistKey(colNm)) {
+            rList = melonCacheMapper.getSongList(colNm); // RedisDB에서 데이터 가져오기
+
+        } else {
+            rList = melonMapper.getSongList(colNm); // MongoDB에서 데이터 가져오기
+
+        }
 
         if (rList == null) {
             rList = new LinkedList<>();

@@ -118,4 +118,37 @@ public interface IMyRedisMapper {
      */
     Set<RedisDTO> getRedisSetJSONLambda(String redisKey) throws Exception;
 
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장하기
+     *
+     * @param redisKey Redis 저장 키
+     * @param pList 저장할 정보들
+     * @return 저장 성공 여부
+     */
+    int saveRedisZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception;
+
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장된 데이터 가져오기
+     *
+     * @param redisKey 가져올 RedisKey
+     * @return 결과값
+     */
+    Set<RedisDTO> getRedisZSetJSON(String redisKey) throws Exception;
+
+    /**
+     * RedisDB에 JSON 구조로 저장된 데이터 삭제하기
+     *
+     * @param redisKey 삭제할 RedisKey
+     * @return 결과값
+     */
+    boolean deleteJSONData(String redisKey) throws Exception; // 삭제 : true, 삭제못함 : false 결과값 반환
+
+    /**
+     * RedisDB에 String 구조로 저장된 데이터 삭제하기
+     *
+     * @param redisKey 삭제할 RedisKey
+     * @return 결과값
+     */
+    boolean deleteStringData(String redisKey) throws Exception; // 삭제 : true, 삭제못함 : false 결과값 반환
+
 }

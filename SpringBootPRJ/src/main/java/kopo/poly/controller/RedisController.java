@@ -298,4 +298,74 @@ public class RedisController {
         return rSet;
     }
 
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장하기
+     */
+    @GetMapping(value = "redis/saveRedisZSetJSON")
+    public String saveRedisZSetJSON() throws Exception {
+
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON Start!");
+
+        // 수집 결과 출력
+        String msg;
+
+        int res = myRedisService.saveRedisZSetJSON();
+
+        if (res == 1) {
+            msg = "키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장하기 success";
+
+        } else {
+            msg = "키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장하기 fail";
+        }
+
+        log.info(this.getClass().getName() + ".saveRedisZSetJSON End!");
+
+        return msg;
+    }
+
+    /**
+     * 키(key)는 ZSet 타입으로, 값(value)은 JSON 형태로 저장된 데이터 가져오기
+     */
+    @GetMapping(value = "redis/getRedisZSetJSON")
+    public Set<RedisDTO> getRedisZSetJSON() throws Exception {
+
+        log.info(this.getClass().getName() + ".getRedisZSetJSON Start!");
+
+        Set<RedisDTO> rSet = myRedisService.getRedisZSetJSON();
+
+        log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
+
+        return rSet;
+    }
+
+    /**
+     * RedisDB에 JSON 구조로 저장된 데이터 삭제하기
+     */
+    @GetMapping(value = "redis/deleteJSONData")
+    public boolean deleteJSONData() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteJSONData Start!");
+
+        boolean res = myRedisService.deleteJSONData();
+
+        log.info(this.getClass().getName() + ".deleteJSONData End!");
+
+        return res;
+    }
+
+    /**
+     * RedisDB에 String 구조로 저장된 데이터 삭제하기
+     */
+    @GetMapping(value = "redis/deleteStringData")
+    public boolean deleteStringData() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteStringData Start!");
+
+        boolean res = myRedisService.deleteStringData();
+
+        log.info(this.getClass().getName() + ".deleteStringData End!");
+
+        return res;
+    }
+
 }
